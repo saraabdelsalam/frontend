@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
-
+import { RegisterComponent } from './pages/register/register.component'; // adjust path if needed
+import { DashboardComponent } from './pages/dashboard/dashboard';
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
@@ -13,11 +13,10 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
-
     FormsModule,
     HttpClientModule,
     JwtModule.forRoot({
@@ -26,7 +25,8 @@ export function tokenGetter() {
         allowedDomains: ['localhost:3000'],
         disallowedRoutes: []
       }
-    })
+    }),
+    RegisterComponent // <-- ADD RegisterComponent here
   ],
 })
 export class AppModule {}

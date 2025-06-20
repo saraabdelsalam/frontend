@@ -1,0 +1,34 @@
+<h2 class="mb-3">My Goals</h2>
+<form (submit)="addGoal($event)" class="mb-4">
+  <input class="form-control mb-2" placeholder="Title" [(ngModel)]="newGoal.title" name="title" required />
+  <textarea class="form-control mb-2" placeholder="Description" [(ngModel)]="newGoal.description" name="description"></textarea>
+  <input type="date" [(ngModel)]="newGoal.deadline" name="deadline" required>
+  <div class="form-check mb-2">
+    <input type="checkbox" class="form-check-input" [(ngModel)]="newGoal.isPublic" name="isPublic" id="isPublic" />
+    <label class="form-check-label" for="isPublic">Make goal public</label>
+  </div>
+  <button class="btn btn-success">Add Goal</button>
+</form>
+
+
+<ul class="list-group">
+  <li *ngFor="let goal of goals" class="list-group-item">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <strong>{{ goal.title }}</strong><br />
+        <small>{{ goal.description }}</small>
+      </div>
+      <div>
+        <button class="btn btn-sm btn-danger me-2" (click)="deleteGoal(goal.id)">Delete</button>
+        <button class="btn btn-sm btn-secondary" (click)="newGoal.parentId = goal.id">Add Sub-Goal</button>
+      </div>
+    </div>
+
+    <ul class="mt-2 ps-3">
+      <li *ngFor="let child of getChildren(goal.id)">
+        - {{ child.title }}
+        <button class="btn btn-sm btn-outline-danger btn-sm ms-2" (click)="deleteGoal(child.id)">Delete</button>
+      </li>
+    </ul>
+  </li>
+</ul>
