@@ -1,4 +1,8 @@
 <h2 class="mb-3">My Goals</h2>
+<div *ngIf="newGoal.parentId" class="alert alert-info">
+  Adding sub-goal to: <strong>{{ getGoalTitle(newGoal.parentId) }}</strong>
+  <button type="button" class="btn btn-sm btn-outline-secondary float-end" (click)="clearParentId()">Cancel</button>
+</div>
 <form (submit)="addGoal($event)" class="mb-4">
   <input class="form-control mb-2" placeholder="Title" [(ngModel)]="newGoal.title" name="title" required />
   <textarea class="form-control mb-2" placeholder="Description" [(ngModel)]="newGoal.description" name="description"></textarea>
@@ -9,21 +13,9 @@
   </div>
   <button class="btn btn-success">Add Goal</button>
 </form>
-<form *ngIf="editingGoal" (submit)="updateGoal($event)" class="mb-4">
-  <input class="form-control mb-2" placeholder="Title" [(ngModel)]="editingGoal.title" name="editTitle" required />
-  <textarea class="form-control mb-2" placeholder="Description" [(ngModel)]="editingGoal.description" name="editDescription"></textarea>
-  <input type="date" [(ngModel)]="editingGoal.deadline" name="editDeadline" required>
-  <div class="form-check mb-2">
-    <input type="checkbox" class="form-check-input" [(ngModel)]="editingGoal.isPublic" name="editIsPublic" id="editIsPublic" />
-    <label class="form-check-label" for="editIsPublic">Make goal public</label>
-  </div>
-  <button class="btn btn-primary">Save Changes</button>
-  <button class="btn btn-secondary ms-2" (click)="cancelEdit()">Cancel</button>
-</form>
-
 
 <ul class="list-group">
-  <li *ngFor="let goal of goals" class="list-group-item">
+  <li *ngFor="let goal of topLevelGoals()" class="list-group-item">
     <div class="d-flex justify-content-between align-items-center">
       <div>
         <strong>{{ goal.title }}</strong><br />
@@ -31,15 +23,34 @@
       </div>
       <div>
         <button class="btn btn-sm btn-danger me-2" (click)="deleteGoal(goal.id)">Delete</button>
-        <button class="btn btn-sm btn-secondary" (click)="startSubGoal(goal.id)">Add Sub-Goal</button>
+        <button class="btn btn-sm btn-secondary me-2" (click)="startSubGoal(goal.id)">Add Sub-Goal</button>
+        <button class="btn btn-sm btn-warning" (click)="editGoal(goal)">Edit</button>
       </div>
+    </div>
+
+    <div *ngIf="editingGoal && editingGoal.id === goal.id" class="mt-2">
+      <input class="form-control mb-1" [(ngModel)]="editingGoal.title" placeholder="Title" name="editTitle{{goal.id}}" />
+      <textarea class="form-control mb-1" [(ngModel)]="editingGoal.description" placeholder="Description" name="editDescription{{goal.id}}"></textarea>
+      <input type="date" class="form-control mb-2" [(ngModel)]="editingGoal.deadline" name="editDeadline{{goal.id}}" />
+      <button class="btn btn-sm btn-success me-2" (click)="saveEdit()">Save</button>
+      <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
     </div>
 
     <ul class="mt-2 ps-3">
       <li *ngFor="let child of getChildren(goal.id)">
         - {{ child.title }}
-        <button class="btn btn-sm btn-outline-danger btn-sm ms-2" (click)="deleteGoal(child.id)">Delete</button>
+        <button class="btn btn-sm btn-outline-danger ms-2" (click)="deleteGoal(child.id)">Delete</button>
+        <button class="btn btn-sm btn-warning" (click)="editGoal(child)">Edit</button>
+
+        <div *ngIf="editingGoal && editingGoal.id === child.id" class="mt-2">
+          <input class="form-control mb-1" [(ngModel)]="editingGoal.title" placeholder="Title" name="editTitle{{child.id}}" />
+          <textarea class="form-control mb-1" [(ngModel)]="editingGoal.description" placeholder="Description" name="editDescription{{child.id}}"></textarea>
+          <input type="date" class="form-control mb-2" [(ngModel)]="editingGoal.deadline" name="editDeadline{{child.id}}" />
+          <button class="btn btn-sm btn-success me-2" (click)="saveEdit()">Save</button>
+          <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+        </div>
       </li>
     </ul>
   </li>
 </ul>
+

@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms'; // ✅ Import FormsModule
 import { AuthService } from '../../services/auth.service';
 import { GoalService } from '../../services/goal';
 import { CommonModule } from '@angular/common'; 
+import { RouterModule } from '@angular/router'
 
 @Component({
   selector: 'app-dashboard',
   standalone: true, // ✅ Assuming it is standalone
   templateUrl: './dashboard.html',
-  imports: [FormsModule, CommonModule], // ✅ Add FormsModule here
+  imports: [FormsModule, CommonModule, RouterModule], // ✅ Add FormsModule here
 })
 export class DashboardComponent implements OnInit {
   goals: any[] = [];
@@ -18,7 +19,7 @@ export class DashboardComponent implements OnInit {
     description: '',
     parentId: '',
     isPublic: false,
-    deadline: '' // <-- Add this line
+    deadline: ''
   };
 
   constructor(
@@ -90,22 +91,33 @@ export class DashboardComponent implements OnInit {
   getChildren(parentId: string): any[] {
   return this.goals.filter(goal => goal.parentId === parentId);
 }
-editingGoal: any = null;
-
-editGoal(goal: any) {
-  this.editingGoal = { ...goal }; // Clone to avoid direct binding
+topLevelGoals(): any[] {
+  return this.goals.filter(goal => !goal.parentId);
+}
+getGoalTitle(goalId: string): string {
+  const goal = this.goals.find(g => g.id === goalId);
+  return goal ? goal.title : '(Unknown)';
 }
 
-cancelEdit() {
+clearParentId(): void {
+  this.newGoal.parentId = '';
+}
+editingGoal: any = null;
+
+editGoal(goal: any): void {
+  // Clone the object to avoid 2-way binding on original list
+  this.editingGoal = { ...goal };
+}
+
+cancelEdit(): void {
   this.editingGoal = null;
 }
 
-async updateGoal(event: Event): Promise<void> {
-  event.preventDefault();
+async saveEdit(): Promise<void> {
   try {
     await this.goalService.update(this.editingGoal.id, this.editingGoal);
     this.editingGoal = null;
-    await this.loadGoals();
+    await this.loadGoals(); // reload updated list
   } catch (err) {
     console.error('Failed to update goal:', err);
   }

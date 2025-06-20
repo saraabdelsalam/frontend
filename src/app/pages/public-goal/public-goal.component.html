@@ -1,0 +1,10 @@
+<div class="container mt-5">
+  <ng-container *ngIf="loading">Loading...</ng-container>
+  <ng-container *ngIf="error">{{ error }}</ng-container>
+  <ng-container *ngIf="goal && !loading">
+    <h2>{{ goal.title }}</h2>
+    <p>{{ goal.description }}</p>
+    <div *ngIf="goal.deadline"><strong>Deadline:</strong> {{ goal.deadline }}</div>
+    <div *ngIf="goal.isPublic"><span class="badge bg-success">Public</span></div>
+  </ng-container>
+</div>

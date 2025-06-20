@@ -29,11 +29,19 @@ export class GoalService {
 }
 
   update(id: string, goal: any) {
-    return axios.patch(`${this.api}/${id}`, goal, this.headers);
+    return axios.put(`${this.api}/${id}`, goal, this.headers);
   }
 
   delete(id: string) {
     return axios.delete(`${this.api}/${id}`, this.headers);
   }
-  
+
+getPublicGoals() {
+  return axios.get(`${environment.apiUrl}/public-goals`);
+}
+
+getPublicGoal(Id: string) {
+  return axios.get(`${environment.apiUrl}/public-goals/${Id}`);
+}
+
 }

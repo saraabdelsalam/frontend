@@ -1,0 +1,13 @@
+<div class="container mt-4">
+  <h3>Public Goals</h3>
+  <ul class="list-group">
+    <li *ngFor="let goal of publicGoals" class="list-group-item">
+      <h5>
+  <a [routerLink]="['/public', goal.Id]">{{ goal.title }}</a>
+</h5>
+      <p>{{ goal.description }}</p>
+      <small>Deadline: {{ goal.deadline}}</small>
+      <br />
+    </li>
+  </ul>
+</div>
