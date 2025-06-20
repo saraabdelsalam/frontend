@@ -37,11 +37,11 @@ export class GoalService {
   }
 
 getPublicGoals() {
-  return axios.get(`${environment.apiUrl}/public-goals`);
+  return axios.get(`${environment.apiUrl}/public`);
 }
 
 getPublicGoal(Id: string) {
-  return axios.get(`${environment.apiUrl}/public-goals/${Id}`);
+  return axios.get(`${environment.apiUrl}/public/${Id}`);
 }
 
 }

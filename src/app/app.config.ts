@@ -10,8 +10,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  {path: 'public/:Id', component: PublicGoalComponent },
-  {path: 'public-goals', component: PublicGoalsComponent },
+  {path: 'public/:id', component: PublicGoalComponent },
+  {path: 'public', component: PublicGoalsComponent },
 ];
 
 export const appConfig: ApplicationConfig = {

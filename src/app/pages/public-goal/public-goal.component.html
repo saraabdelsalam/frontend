@@ -1,10 +1,21 @@
 <div class="container mt-5">
   <ng-container *ngIf="loading">Loading...</ng-container>
   <ng-container *ngIf="error">{{ error }}</ng-container>
+
   <ng-container *ngIf="goal && !loading">
     <h2>{{ goal.title }}</h2>
     <p>{{ goal.description }}</p>
-    <div *ngIf="goal.deadline"><strong>Deadline:</strong> {{ goal.deadline }}</div>
+    <div *ngIf="goal.deadline"><strong>Deadline:</strong> {{ goal.deadline | date }}</div>
     <div *ngIf="goal.isPublic"><span class="badge bg-success">Public</span></div>
+
+    <hr />
+    <h4>Subgoals</h4>
+    <ul *ngIf="children.length > 0; else noSubs">
+      <li *ngFor="let sub of children">
+        <strong>{{ sub.title }}</strong> – {{ sub.description }}<br />
+        <small>Deadline: {{ sub.deadline | date }}</small>
+      </li>
+    </ul>
+    <ng-template #noSubs><p>No subgoals found.</p></ng-template>
   </ng-container>
 </div>

@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PublicGoalComponent implements OnInit {
   goal: any = null;
+  children: any[] = [];
   loading = true;
   error: string | null = null;
 
@@ -28,7 +29,8 @@ export class PublicGoalComponent implements OnInit {
     }
     try {
       const res = await this.goalService.getPublicGoal(id);
-      this.goal = res.data;
+      this.goal = res.data.goal;        // ✅ extract actual goal
+      this.children = res.data.children; // ✅ get subgoals
     } catch (err) {
       this.error = 'Failed to load public goal.';
     } finally {
