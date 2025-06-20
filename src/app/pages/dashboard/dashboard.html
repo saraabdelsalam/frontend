@@ -9,6 +9,17 @@
   </div>
   <button class="btn btn-success">Add Goal</button>
 </form>
+<form *ngIf="editingGoal" (submit)="updateGoal($event)" class="mb-4">
+  <input class="form-control mb-2" placeholder="Title" [(ngModel)]="editingGoal.title" name="editTitle" required />
+  <textarea class="form-control mb-2" placeholder="Description" [(ngModel)]="editingGoal.description" name="editDescription"></textarea>
+  <input type="date" [(ngModel)]="editingGoal.deadline" name="editDeadline" required>
+  <div class="form-check mb-2">
+    <input type="checkbox" class="form-check-input" [(ngModel)]="editingGoal.isPublic" name="editIsPublic" id="editIsPublic" />
+    <label class="form-check-label" for="editIsPublic">Make goal public</label>
+  </div>
+  <button class="btn btn-primary">Save Changes</button>
+  <button class="btn btn-secondary ms-2" (click)="cancelEdit()">Cancel</button>
+</form>
 
 
 <ul class="list-group">
@@ -20,7 +31,7 @@
       </div>
       <div>
         <button class="btn btn-sm btn-danger me-2" (click)="deleteGoal(goal.id)">Delete</button>
-        <button class="btn btn-sm btn-secondary" (click)="newGoal.parentId = goal.id">Add Sub-Goal</button>
+        <button class="btn btn-sm btn-secondary" (click)="startSubGoal(goal.id)">Add Sub-Goal</button>
       </div>
     </div>
 

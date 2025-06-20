@@ -13,12 +13,14 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     LoginComponent,
-    DashboardComponent,
+
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    DashboardComponent,
+    RegisterComponent,
     JwtModule.forRoot({
       config: {
         tokenGetter,
@@ -26,7 +28,6 @@ export function tokenGetter() {
         disallowedRoutes: []
       }
     }),
-    RegisterComponent // <-- ADD RegisterComponent here
   ],
 })
 export class AppModule {}
